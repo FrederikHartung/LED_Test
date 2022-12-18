@@ -16,7 +16,7 @@ void setLedOff(int number){
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  
+  //Test
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear();
   pixels.show();
