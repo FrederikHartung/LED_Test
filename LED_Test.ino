@@ -17,54 +17,85 @@ void setup() {
   pixels.show();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  //setLedOn(0);
-  //setLedOn(2);
-  //setLedOff(1);
-  //setLedOff(3);
-  //pixels.show();
+void showEverySecondLed(){
+  for (int i = 0; i < NUM_LEDS; i++) {
 
-  //delay(500); //delay for milli sec
+    if(i % 2 == 0){
+      setLed(i, 100, 0, 0);
+    }
+    else{
+      setLed(i, 0, 0, 0);
+    }
+  }
 
-  //setLedOff(1);
-  //setLedOff(2);
-  //setLedOn(1);
-  //setLedOn(3);
-  //pixels.show();
+  pixels.show();
+  delay(500);
 
-  //delay(500); //delay for milli sec
-  //for (int i = 0; i < NUM_LEDS; i++) {
-  //if(i % 2 == 0){
-     // setLedOn(i);
-   // }
- // else{
-    //setLedOff(i);
-   // }
-  //}
+  for (int i = 0; i < NUM_LEDS; i++) {
+   if(i % 2 == 0){
+      setLed(i, 0, 0, 0);
+    }
+   else{
+      setLed(i, 100, 0, 0);
+    }
+  }
 
-  //pixels.show();
-  //delay(500);
- // for (int i = 0; i < NUM_LEDS; i++) {
-  //if(i % 2 == 0){
-    //  setLedOff(i);
-   // }
-  //else{
-    //setLedOn(i);
-   // }
-  //}
-  setLed(0, 100, 0, 0, 0);
-  setLed(1, 0, 100, 0, 0);
-  setLed(2, 0, 0, 100, 0);
-  setLed(3, 100, 100, 100, 0);
+  pixels.show();
+  delay(500);
+}
+
+void showSpecificLed(){
+  setLed(0, 100, 0, 0);
+  setLed(1, 0, 100, 0);
+  setLed(2, 0, 0, 100);
+  setLed(3, 100, 100, 100);
   pixels.show();
   delay(2000);
   pixels.clear();
 
-  setLed(0, 0, 0, 0, 0);
-  setLed(2, 0, 0, 0, 0);
-  setLed(2, 0, 0, 0, 0);
-  setLed(3, 0, 0, 0, 0);
+  setLed(0, 0, 0, 0);
+  setLed(2, 0, 0, 0);
+  setLed(2, 0, 0, 0);
+  setLed(3, 0, 0, 0);
   pixels.show();
   delay(500);
+}
+
+int RED = 0;
+int GREEN = 0;
+int BLUE = 0;
+
+void showRainbow(){
+  if(RED < 256){
+    RED = RED + 5;
+  }
+  else
+  {
+    RED = 0;
+  }
+
+  for (int i = 0; i < NUM_LEDS; i++) {
+    setLed(i, RED, GREEN, BLUE);
+  }
+
+  pixels.show();
+  delay(10);
+}
+
+void showBrightness(){
+  for(int i = 0; i < 11; i++){
+        setLed(i, i * 25, 0, 0);
+  }
+  setLed(10, 255, 0, 0);
+  pixels.show();
+  delay(1000);
+}
+
+void loop() {
+  setLed(0, 1, 0, 0);
+  setLed(1, 1, 50, 0);
+  setLed(2, 1, 1, 50);
+  setLed(3, 255, 0, 0);
+  pixels.show();
+  delay(1000);
 }
