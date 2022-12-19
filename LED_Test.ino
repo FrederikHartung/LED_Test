@@ -1,16 +1,16 @@
 #include <Adafruit_NeoPixel.h>
 
-#define NUM_LEDS 114 //Count of LEDs
+#define NUM_LEDS 128 //Count of LEDs
 #define DATA_PIN 23 //ID of the Pin for data transfer from ESP32 to NeoPixlel LED strip
 
-Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_GRBW + NEO_KHZ800);
+Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_RGB + NEO_KHZ800);
 
-void setLedOn(int number){
-  pixels.setPixelColor(number, pixels.Color(0, 0, 0, 100));
-
+void setLed(int number, int value_r, int value_g, int value_b, int value_w){
+  pixels.setPixelColor(number, pixels.Color(value_g, value_r, value_b, value_w));
 }
+
 void setLedOff(int number){
-  pixels.setPixelColor(number, pixels.Color(0, 0, 0, 0));
+  pixels.setPixelColor(number, pixels.Color(100, 0, 0, 0));
 }
 
 void setup() {
@@ -24,19 +24,52 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  setLedOn(0);
-  setLedOn(2);
-  setLedOff(1);
-  setLedOff(3);
+  //setLedOn(0);
+  //setLedOn(2);
+  //setLedOff(1);
+  //setLedOff(3);
+  //pixels.show();
+
+  //delay(500); //delay for milli sec
+
+  //setLedOff(1);
+  //setLedOff(2);
+  //setLedOn(1);
+  //setLedOn(3);
+  //pixels.show();
+
+  //delay(500); //delay for milli sec
+  //for (int i = 0; i < NUM_LEDS; i++) {
+  //if(i % 2 == 0){
+     // setLedOn(i);
+   // }
+ // else{
+    //setLedOff(i);
+   // }
+  //}
+
+  //pixels.show();
+  //delay(500);
+ // for (int i = 0; i < NUM_LEDS; i++) {
+  //if(i % 2 == 0){
+    //  setLedOff(i);
+   // }
+  //else{
+    //setLedOn(i);
+   // }
+  //}
+  setLed(0, 100, 0, 0, 0);
+  setLed(1, 0, 100, 0, 0);
+  setLed(2, 0, 0, 100, 0);
+  setLed(3, 100, 100, 100, 0);
   pixels.show();
+  delay(2000);
+  pixels.clear();
 
-  delay(500); //delay for milli sec
-
-  setLedOff(1);
-  setLedOff(2);
-  setLedOn(1);
-  setLedOn(3);
-  pixels.show);
-
-  delay(500); //delay for milli sec
+  setLed(0, 0, 0, 0, 0);
+  setLed(2, 0, 0, 0, 0);
+  setLed(2, 0, 0, 0, 0);
+  setLed(3, 0, 0, 0, 0);
+  pixels.show();
+  delay(500);
 }
