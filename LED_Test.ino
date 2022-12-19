@@ -1,22 +1,17 @@
 #include <Adafruit_NeoPixel.h>
 
-#define NUM_LEDS 128 //Count of LEDs
+#define NUM_LEDS 11 //Count of LEDs
 #define DATA_PIN 23 //ID of the Pin for data transfer from ESP32 to NeoPixlel LED strip
 
 Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_RGB + NEO_KHZ800);
 
-void setLed(int number, int value_r, int value_g, int value_b, int value_w){
-  pixels.setPixelColor(number, pixels.Color(value_g, value_r, value_b, value_w));
-}
-
-void setLedOff(int number){
-  pixels.setPixelColor(number, pixels.Color(100, 0, 0, 0));
+void setLed(int number, int value_r, int value_g, int value_b){
+  pixels.setPixelColor(number, pixels.Color(value_g, value_r, value_b, 0));
 }
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  //Test
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear();
   pixels.show();
