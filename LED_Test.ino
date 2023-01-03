@@ -3,13 +3,13 @@
 
 #define NUM_LEDS 114 //Count of LEDs
 #define DATA_PIN 23 //ID of the Pin for data transfer from ESP32 to NeoPixlel LED strip
-#define DEBUG
+//#define DEBUG
 
 Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_RGB + NEO_KHZ800);
 RTC_DS3231 rtc;
-int brightnessRed = 20;
+int brightnessRed = 0;
 int brightnessGreen = 20;
-int brightnessBlue = 20;
+int brightnessBlue = 10;
 
 //#include <time.h>
 //const char *ntpServer = "pool.ntp.org";
@@ -199,9 +199,20 @@ void letAllShine(){
 void checkForTimeUpdate(){
   Serial.println("waiting for time input...");
   if (Serial.available()) { // if there is data comming
-    String epochSeconds = Serial.readStringUntil('\n'); // read string until newline character
-    Serial.println("new time in epoch seconds: " + epochSeconds);
-    rtc.adjust(DateTime(epochSeconds.toInt()));
+    String input = Serial.readStringUntil('\n'); // read string until newline character
+    //Dummy utc in epoch seconds time: 1672670580
+
+    if(input.equals("clear")){
+        pixels.clear();
+    }
+    else if(input.length() == 10){
+      Serial.println("trying to adjust the rtc time to new value");
+      rtc.adjust(DateTime(input.toInt()));
+      pixels.clear();
+    }
+    else{ //set imput as epoch seconds string
+    Serial.println("unknown what to do with input: " + input);
+    }
   }
 }
 
@@ -348,6 +359,15 @@ void displayCurrentTime()
       Serial.println("tm_min / 5 = 2");
     #endif
 
+    for (int i = 106; i < 110; i++)//done
+    { //Fünf
+      setLedOff(i);
+    }
+    for (int i = 66; i < 70; i++) //done 
+    { //Nach
+      setLedOff(i);
+    }
+
     for (int i = 95; i < 99; i++) //done
     { // Zehn
       setLedOn(i);
@@ -355,10 +375,6 @@ void displayCurrentTime()
     for (int i = 66; i < 70; i++) //done
     { //Nach
       setLedOn(i);
-    }
-    for (int i = 106; i < 110; i++)//done
-    { //Fünf
-      setLedOff(i);
     }
     break;
 
@@ -477,7 +493,6 @@ void displayCurrentTime()
     { //Fünf
       setLedOff(i);
     }
-
     for (int i = 74; i < 77; i++) //done
     { // Vor
       setLedOff(i);
@@ -493,15 +508,16 @@ void displayCurrentTime()
       Serial.println("tm_min / 5 = 7");
     #endif
 
+    for (int i = 106; i < 110; i++) //done
+    { //Fünf
+      setLedOn(i);
+    }
     for (int i = 66; i < 70; i++) //done
     { //Nach
       setLedOn(i);
     }
 
-    for (int i = 106; i < 110; i++) //done
-    { //Fünf
-      setLedOn(i);
-    }
+
 
     for (int i = 55; i < 59; i++) //done
     { //Halb
@@ -695,7 +711,7 @@ void displayCurrentTime()
       Serial.println("tm_hour = 2");
     #endif
 
-    for (int i = 62; i < 66; i++) //done
+    for (int i = 51; i < 55; i++) //done
     { //Eins
       setLedOff(i);
     }
@@ -824,15 +840,34 @@ void displayCurrentTime()
   pixels.show();   // Send the updated pixel colors to the hardware.
 }
 
+void testCornerLeds(){
+setLed(113, 10, 0, 0); 
+  setLed(112, 10, 0, 0); 
+  setLed(111, 10, 0, 0); 
+  setLed(110, 10, 0, 0); 
+  pixels.show();
+  delay(5000); //sleep 10 sec
+  setLed(113, 0, 10, 0); 
+  setLed(112, 0, 10, 0); 
+  setLed(111, 0, 10, 0); 
+  setLed(110, 0, 10, 0); 
+  pixels.show();
+  delay(5000); //sleep 10 sec
+  setLed(113, 0, 0, 10); 
+  setLed(112, 0, 0, 10); 
+  setLed(111, 0, 0, 10); 
+  setLed(110, 0, 0, 10); 
+  pixels.show();
+  delay(5000); //sleep 10 sec
+}
+
 
 void loop() {
   checkForTimeUpdate();
   printDateTime(getCurrentTime());
-
+  //letAllShine();
   displayCurrentTime(); 
-  #if defined(DEBUG)
-    Serial.println("-----------------");
-  #endif
-  delay(10000); //sleep 10 sec
+  delay(5000);
+  Serial.println("-----------------");
 }
 
