@@ -5,6 +5,31 @@
 #define DATA_PIN 23 //ID of the Pin for data transfer from ESP32 to NeoPixlel LED strip
 //#define DEBUG
 
+//fredo todo
+// Die Funktion gibt 'true' zurück, wenn Sommerzeit aktiv ist, sonst 'false'
+bool isSummerTime(const DateTime& dt) {
+  // Regeln für Sommerzeit in Deutschland
+  int startDay = (31 - (5 * dt.year() / 4 + 4) % 7);
+  int endDay = (31 - (5 * dt.year() / 4 + 1) % 7);
+
+  DateTime startSummerTime(dt.year(), 3, startDay, 2, 0, 0); // Letzter Sonntag im März, 2:00 Uhr
+  DateTime endSummerTime(dt.year(), 10, endDay, 3, 0, 0); // Letzter Sonntag im Oktober, 3:00 Uhr
+
+  return (dt >= startSummerTime && dt < endSummerTime);
+}
+
+DateTime getCurrentTime(){
+  DateTime now = rtc.now();
+
+  if(isSummerTime(now)){
+    return DateTime(now.unixtime() + summerTimeAdjustSeconds);
+  }
+  else{
+    return DateTime(now.unixtime() + wintertimeAdjustSeconds);
+  }
+}
+//fredo todo end
+
 Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_RGB + NEO_KHZ800);
 RTC_DS3231 rtc;
 int brightnessRed = 0;
